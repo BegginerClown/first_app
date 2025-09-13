@@ -22,10 +22,17 @@ class MainApp(MDApp):
             MDButtonText(text="Нажми меня"),
             pos_hint={"center_x": 0.5, "center_y": 0.5}
         )
+
         button.bind(on_release=lambda x: print("Кнопка нажата!"))
+        button1 = MDButton(
+            MDButtonText(text="Вторая кнопка"),
+            pos_hint={"center_x": 0.5, "center_y": 0.4}
+        )
+        button1.bind(on_release=lambda x: print("Вторая кнопка нажата!"))
 
         screen.add_widget(label)
         screen.add_widget(button)
+        screen.add_widget(button1)
         return screen
 
 
