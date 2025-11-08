@@ -18,10 +18,12 @@ class Player():
         self.last_direction = 'right'
 
         self.walk_right_frames = [
-            pygame.image.load(f'images/player/walk right/{i}.png') for i in range(1, 7)
+            #pygame.image.load(f'images/player/walk right/{i}.png') for i in range(1, 7)
+            pygame.image.load(f'images/player/knight/walk right/{i}.png') for i in range(1, 9)
         ]
         self.walk_left_frames = [
-            pygame.image.load(f'images/player/walk left/{i}.png') for i in range(1, 7)
+            #pygame.image.load(f'images/player/walk left/{i}.png') for i in range(1, 7)
+            pygame.image.load(f'images/player/knight/walk left/{i}.png') for i in range(1, 9)
         ]
         self.walk_back_frames = [
             pygame.image.load(f'images/player/walk back/{i}.png') for i in range(1, 3)
