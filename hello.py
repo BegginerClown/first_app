@@ -9,6 +9,8 @@ screen = pygame.display.set_mode((1376, 768))#, flags=pygame.NOFRAME)
 pygame.display.set_caption("Тамагочи")
 icon = pygame.image.load('images/icons/icon.png')
 bg = pygame.image.load('images/back/back.png')
+bg_left = pygame.image.load('images/back/back_left.png').convert_alpha()
+bg_right = pygame.image.load('images/back/back_right.png').convert_alpha()
 pygame.display.set_icon(icon)
 
 player = Player(name='Pete')
@@ -32,6 +34,8 @@ while running:
         text = font.render(f'X: {player.x}, Y: {player.y}', True, (255, 255, 255))
         screen.blit(text, (10, 10))
     player.draw(screen, screen.get_width())
+    screen.blit(bg_left, (0, 510))
+    screen.blit(bg_right, (1136, 612))
     pygame.display.update()
 
     clock.tick(60)

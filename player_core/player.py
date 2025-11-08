@@ -60,18 +60,18 @@ class Player():
             self.y -= self.back_front_speed
             self.current_frames = self.walk_back_frames
 
-        elif (keys[pygame.K_DOWN] or keys[pygame.K_s]) and self.y <= 500:
+        elif (keys[pygame.K_DOWN] or keys[pygame.K_s]) and self.y <= 550:
             self.update_animation(self.back_front_anim_speed)
             self.y += self.back_front_speed
             self.current_frames = self.walk_front_frames
 
-        elif (keys[pygame.K_LEFT] or keys[pygame.K_a]) and self.x > 200:
+        elif (keys[pygame.K_LEFT] or keys[pygame.K_a]) and self.x > 148:
             self.update_animation(self.animation_speed)
             self.x -= self.walk_speed
             self.current_frames = self.walk_left_frames
             self.last_direction = 'left'
 
-        elif (keys[pygame.K_RIGHT] or keys[pygame.K_d]) and self.x < 1100:
+        elif (keys[pygame.K_RIGHT] or keys[pygame.K_d]) and self.x < 1200:
             self.update_animation(self.animation_speed)
             self.x += self.walk_speed
             self.current_frames = self.walk_right_frames
