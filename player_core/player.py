@@ -1,4 +1,6 @@
 import pygame
+from map.can_move import IsCanMove
+can_move = IsCanMove()
 class Player():
     def __init__(self, name: str, x=200, y=500):
         self.name = name
@@ -55,7 +57,7 @@ class Player():
     def moving(self, keys):
         old_frames = self.current_frames
 
-        if (keys[pygame.K_UP] or keys[pygame.K_w]) and self.y >= 400:
+        if (keys[pygame.K_UP] or keys[pygame.K_w]) and self.y >= 414 and can_move.can_move_x(self.x, self.y - self.walk_speed):
             self.update_animation(self.back_front_anim_speed)
             self.y -= self.back_front_speed
             self.current_frames = self.walk_back_frames
@@ -65,13 +67,13 @@ class Player():
             self.y += self.back_front_speed
             self.current_frames = self.walk_front_frames
 
-        elif (keys[pygame.K_LEFT] or keys[pygame.K_a]) and self.x > 148:
+        elif (keys[pygame.K_LEFT] or keys[pygame.K_a]) and self.x > 148 and can_move.can_move_x(self.x - self.walk_speed, self.y):
             self.update_animation(self.animation_speed)
             self.x -= self.walk_speed
             self.current_frames = self.walk_left_frames
             self.last_direction = 'left'
 
-        elif (keys[pygame.K_RIGHT] or keys[pygame.K_d]) and self.x < 1200:
+        elif (keys[pygame.K_RIGHT] or keys[pygame.K_d]) and self.x < 1200 and can_move.can_move_x(self.x + self.walk_speed, self.y):
             self.update_animation(self.animation_speed)
             self.x += self.walk_speed
             self.current_frames = self.walk_right_frames
