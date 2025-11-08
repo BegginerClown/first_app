@@ -3,6 +3,9 @@ from map.can_move import IsCanMove
 can_move = IsCanMove()
 class Player():
     def __init__(self, name: str, x=200, y=500):
+        self.hunger = 100
+        self.happiness = 100
+        self.energy = 100
         self.name = name
         self.x = x
         self.y = y
@@ -33,6 +36,11 @@ class Player():
 
         self.direction = 'right'
         self.current_frames = self.walk_right_frames
+
+    def update_stats(self):
+        self.hunger = max(0, self.hunger - 0.01)
+        self.happiness = max(0, self.happiness - 0.005)
+        self.energy = max(0, self.energy - 0.003)
 
     def update_animation(self, anim_speed):
         self.frame_counter += 1

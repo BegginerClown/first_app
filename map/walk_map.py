@@ -11,7 +11,7 @@ class WalkableMap:
         map_y = int(y)
 
         if not (0 <= map_x < self.width and 0 <= map_y < self.heigth):
-            return  False
+            return False
 
         color = self.map_surface.get_at((map_x, map_y))
         return color == (255, 255, 255, 255)
