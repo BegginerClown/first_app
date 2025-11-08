@@ -15,9 +15,11 @@ class Player():
         self.name = name
         self.x = x
         self.y = y
-        self.speed = 4
+        self.walk_speed = 4
+        self.back_front_speed = 2
         self.current_frame = 0
         self.animation_speed = 8
+        self.back_front_anim_speed = 12
         self.frame_counter = 0
         self.last_direction = 'right'
 
@@ -41,48 +43,43 @@ class Player():
         self.direction = 'right'
         self.current_frames = self.walk_right_frames
 
-    def update_animation(self):
+    def update_animation(self, anim_speed):
         self.frame_counter += 1
-        if self.frame_counter >= self.animation_speed:
+        if self.frame_counter >= anim_speed:
             self.current_frame = (self.current_frame + 1) % len(self.current_frames)
             self.frame_counter = 0
 
     def self_moving(self):
-        self.update_animation()
+        self.update_animation(self.animation_speed)
         if self.direction == 'right':
-            self.x += self.speed
+            self.x += self.walk_speed
             if self.x >= 1100:
                 self.direction = 'left'
                 self.current_frames = self.walk_left_frames
         elif self.direction == 'left':
-            self.x -= self.speed
+            self.x -= self.walk_speed
             if self.x <= 200:
                 self.direction = 'right'
                 self.current_frames = self.walk_right_frames
 
     def moving(self, keys):
-        self.update_animation()
         if (keys[pygame.K_LEFT] or keys[pygame.K_a]) and self.x > 200:
-            self.speed = 4
-            self.animation_speed = 8
-            self.x -= self.speed
+            self.update_animation(self.animation_speed)
+            self.x -= self.walk_speed
             self.current_frames = self.walk_left_frames
             self.last_direction = 'left'
         elif (keys[pygame.K_RIGHT] or keys[pygame.K_d]) and self.x < 1100:
-            self.speed = 4
-            self.animation_speed = 8
-            self.x += self.speed
+            self.update_animation(self.animation_speed)
+            self.x += self.walk_speed
             self.current_frames = self.walk_right_frames
             self.last_direction = 'right'
         elif (keys[pygame.K_UP] or keys[pygame.K_w]) and self.y >= 400:
-            self.speed = 2
-            self.animation_speed = 12
-            self.y -= self.speed
+            self.update_animation(self.back_front_anim_speed)
+            self.y -= self.back_front_speed
             self.current_frames = self.walk_back_frames
         elif (keys[pygame.K_DOWN] or keys[pygame.K_s]) and self.y <= 500:
-            self.speed = 2
-            self.animation_speed = 12
-            self.y += self.speed
+            self.update_animation(self.back_front_anim_speed)
+            self.y += self.back_front_speed
             self.current_frames = self.walk_front_frames
         else:
             if self.last_direction == 'right':
