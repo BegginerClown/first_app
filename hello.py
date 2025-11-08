@@ -12,6 +12,9 @@ bg = pygame.image.load('images/back/back.png')
 bg_left = pygame.image.load('images/back/back_left.png').convert_alpha()
 bg_right = pygame.image.load('images/back/back_right.png').convert_alpha()
 pygame.display.set_icon(icon)
+bg_sound = pygame.mixer.Sound('sounds/back_mus.mp3')
+bg_sound.set_volume(0.2)
+bg_sound.play()
 
 player = Player(name='Pete')
 
