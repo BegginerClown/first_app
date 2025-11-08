@@ -63,7 +63,16 @@ class Player():
                 self.current_frames = self.walk_right_frames
 
     def moving(self, keys):
-        if (keys[pygame.K_LEFT] or keys[pygame.K_a]) and self.x > 200:
+        old_frames = self.current_frames
+        if (keys[pygame.K_UP] or keys[pygame.K_w]) and self.y >= 400:
+            self.update_animation(self.back_front_anim_speed)
+            self.y -= self.back_front_speed
+            self.current_frames = self.walk_back_frames
+        elif (keys[pygame.K_DOWN] or keys[pygame.K_s]) and self.y <= 500:
+            self.update_animation(self.back_front_anim_speed)
+            self.y += self.back_front_speed
+            self.current_frames = self.walk_front_frames
+        elif (keys[pygame.K_LEFT] or keys[pygame.K_a]) and self.x > 200:
             self.update_animation(self.animation_speed)
             self.x -= self.walk_speed
             self.current_frames = self.walk_left_frames
@@ -73,20 +82,14 @@ class Player():
             self.x += self.walk_speed
             self.current_frames = self.walk_right_frames
             self.last_direction = 'right'
-        elif (keys[pygame.K_UP] or keys[pygame.K_w]) and self.y >= 400:
-            self.update_animation(self.back_front_anim_speed)
-            self.y -= self.back_front_speed
-            self.current_frames = self.walk_back_frames
-        elif (keys[pygame.K_DOWN] or keys[pygame.K_s]) and self.y <= 500:
-            self.update_animation(self.back_front_anim_speed)
-            self.y += self.back_front_speed
-            self.current_frames = self.walk_front_frames
         else:
             if self.last_direction == 'right':
                 self.current_frame = 0
             elif self.last_direction == 'left':
                 self.current_frame = 1
             self.current_frames = self.chill_frames
+        if self.current_frames != old_frames:
+            self.current_frame = 0
 
     def draw(self, surface):
         current_sprite = self.current_frames[self.current_frame]
@@ -113,18 +116,27 @@ player = Player(name='Pete')
 
 
 running = True
+debug_mode = False
+font = pygame.font.SysFont('Arial', 20)
 while running:
-    keys = pygame.key.get_pressed()
-    player.moving(keys)
-    screen.blit(bg, (0, 0))
-    player.draw(screen)
-    pygame.display.update()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-            pygame.quit()
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_F1:
+                debug_mode = not debug_mode
+
+    keys = pygame.key.get_pressed()
+    player.moving(keys)
+    screen.blit(bg, (0, 0))
+    if debug_mode:
+        text = font.render(f'X: {player.x}, Y: {player.y}', True, (255, 255, 255))
+        screen.blit(text, (10, 10))
+    player.draw(screen)
+    pygame.display.update()
 
     clock.tick(60)
+pygame.quit()
 
 
 
