@@ -3,9 +3,9 @@ from map.can_move import IsCanMove
 can_move = IsCanMove()
 class Player():
     def __init__(self, name: str, x=200, y=500):
-        self.hunger = 100
-        self.happiness = 100
-        self.energy = 100
+        self.hunger = 101
+        self.happiness = 101
+        self.energy = 101
         self.name = name
         self.x = x
         self.y = y
@@ -16,14 +16,17 @@ class Player():
         self.back_front_anim_speed = 12
         self.frame_counter = 0
         self.last_direction = 'right'
+        self.hunger_modif = 0.5
+        self.happiness_modif = 0.1
+        self.energy_modif = 1
 
         self.walk_right_frames = [
-            #pygame.image.load(f'images/player/walk right/{i}.png') for i in range(1, 7)
-            pygame.image.load(f'images/player/knight/walk right/{i}.png') for i in range(1, 9)
+            pygame.image.load(f'images/player/walk right/{i}.png') for i in range(1, 7)
+            #pygame.image.load(f'images/player/knight/walk right/{i}.png') for i in range(1, 9)
         ]
         self.walk_left_frames = [
-            #pygame.image.load(f'images/player/walk left/{i}.png') for i in range(1, 7)
-            pygame.image.load(f'images/player/knight/walk left/{i}.png') for i in range(1, 9)
+            pygame.image.load(f'images/player/walk left/{i}.png') for i in range(1, 7)
+            #pygame.image.load(f'images/player/knight/walk left/{i}.png') for i in range(1, 9)
         ]
         self.walk_back_frames = [
             pygame.image.load(f'images/player/walk back/{i}.png') for i in range(1, 3)
@@ -40,9 +43,9 @@ class Player():
         self.current_frames = self.walk_right_frames
 
     def update_stats(self):
-        self.hunger = max(0, self.hunger - 0.01)
-        self.happiness = max(0, self.happiness - 0.005)
-        self.energy = max(0, self.energy - 0.003)
+        self.hunger = max(0, self.hunger - 0.01 * self.hunger_modif)
+        self.happiness = max(0, self.happiness - 0.005 * self.happiness_modif)
+        self.energy = max(0, self.energy - 0.003 * self.energy_modif)
 
     def update_animation(self, anim_speed):
         self.frame_counter += 1

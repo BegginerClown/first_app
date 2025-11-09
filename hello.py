@@ -24,6 +24,12 @@ running = True
 debug_mode = False
 font = pygame.font.SysFont('Arial', 20)
 while running:
+    player.update_stats()
+    stats = [
+        f'Hunger: {int(player.hunger)}',
+        f'Happiness: {int(player.happiness)}',
+        f'Energy: {int(player.energy)}'
+    ]
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -34,6 +40,9 @@ while running:
     keys = pygame.key.get_pressed()
     player.moving(keys)
     screen.blit(bg, (0, 0))
+    for i, stat in enumerate(stats):
+        t_stat = font.render(stat, True, (255, 255, 255))
+        screen.blit(t_stat, (10, 30 + i * 20))
     if debug_mode:
         text = font.render(f'X: {player.x}, Y: {player.y}', True, (255, 255, 255))
         screen.blit(text, (10, 10))
