@@ -10,7 +10,7 @@ class Player():
         self.x = x
         self.y = y
         self.walk_speed = 4
-        self.back_front_speed = 2
+        self.back_front_speed = 1
         self.current_frame = 0
         self.animation_speed = 8
         self.back_front_anim_speed = 12

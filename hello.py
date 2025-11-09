@@ -40,12 +40,13 @@ while running:
     keys = pygame.key.get_pressed()
     player.moving(keys)
     screen.blit(bg, (0, 0))
-    for i, stat in enumerate(stats):
-        t_stat = font.render(stat, True, (255, 255, 255))
-        screen.blit(t_stat, (10, 30 + i * 20))
+
     if debug_mode:
         text = font.render(f'X: {player.x}, Y: {player.y}', True, (255, 255, 255))
         screen.blit(text, (10, 10))
+        for i, stat in enumerate(stats):
+            t_stat = font.render(stat, True, (255, 255, 255))
+            screen.blit(t_stat, (10, 30 + i * 20))
     player.draw(screen, screen.get_width())
     screen.blit(bg_left, (0, 510))
     screen.blit(bg_right, (1136, 612))
