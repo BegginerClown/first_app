@@ -40,13 +40,33 @@ while running:
     keys = pygame.key.get_pressed()
     player.moving(keys)
     screen.blit(bg, (0, 0))
+    bar_width = 150
+    bar_height = 20
+    bar_x = 10
+    bar_start_y = 30
+
+    for i, (stat_name, stat_value, color) in enumerate([
+        ("Hunger", player.hunger, (0, 255, 0)),
+        ("Happiness", player.happiness, (255, 255, 0)),
+        ("Energy", player.energy, (255, 0, 0))
+    ]):
+        # Контур (чёрный прямоугольник)
+        pygame.draw.rect(screen, (0, 0, 0), (bar_x, bar_start_y + i * 30, bar_width, bar_height), 2)
+
+        # Заполнение (внутри контура)
+        fill_width = int((stat_value / 100) * bar_width)
+        pygame.draw.rect(screen, color, (bar_x + 1, bar_start_y + i * 30 + 1, fill_width, bar_height - 2))
+
+        # Текст
+        text = font.render(f'{stat_name}', True, (255, 255, 255))
+        screen.blit(text, (bar_x + bar_width + 5, bar_start_y + i * 30))
 
     if debug_mode:
         text = font.render(f'X: {player.x}, Y: {player.y}', True, (255, 255, 255))
-        screen.blit(text, (10, 10))
+        screen.blit(text, (1200, 10))
         for i, stat in enumerate(stats):
             t_stat = font.render(stat, True, (255, 255, 255))
-            screen.blit(t_stat, (10, 30 + i * 20))
+            screen.blit(t_stat, (1200, 30 + i * 20))
     player.draw(screen, screen.get_width())
     screen.blit(bg_left, (0, 510))
     screen.blit(bg_right, (1136, 612))

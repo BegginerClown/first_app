@@ -3,9 +3,9 @@ from map.can_move import IsCanMove
 can_move = IsCanMove()
 class Player():
     def __init__(self, name: str, x=200, y=500):
-        self.hunger = 101
-        self.happiness = 101
-        self.energy = 101
+        self.hunger = 100
+        self.happiness = 100
+        self.energy = 100
         self.name = name
         self.x = x
         self.y = y
@@ -34,6 +34,12 @@ class Player():
         self.walk_front_frames = [
             pygame.image.load(f'images/player/walk front/{i}.png') for i in range(1, 3)
         ]
+        self.sit_right = [
+            pygame.image.load(f'images/player/sit right/{i}.png') for i in range(1, 8)
+        ]
+        self.sit_left = [
+            pygame.image.load(f'images/player/sit left/{i}.png') for i in range(1, 8)
+        ]
         self.chill_frames = [
             pygame.image.load('images/player/chill right/1.png'),
             pygame.image.load('images/player/chill left/1.png')
@@ -41,6 +47,9 @@ class Player():
 
         self.direction = 'right'
         self.current_frames = self.walk_right_frames
+        self.idle_start_time = pygame.time.get_ticks()
+        self.idle_duration = 5000
+        self.is_sitting = False
 
     def update_stats(self):
         self.hunger = max(0, self.hunger - 0.01 * self.hunger_modif)
@@ -69,38 +78,64 @@ class Player():
 
     def moving(self, keys):
         old_frames = self.current_frames
+        is_moving = any([
+            keys[pygame.K_UP], keys[pygame.K_w],
+            keys[pygame.K_DOWN], keys[pygame.K_s],
+            keys[pygame.K_LEFT], keys[pygame.K_a],
+            keys[pygame.K_RIGHT], keys[pygame.K_d]
+        ])
 
-        if (keys[pygame.K_UP] or keys[pygame.K_w]) and self.y >= 414 and can_move.can_move_x(self.x, self.y - self.walk_speed):
-            self.update_animation(self.back_front_anim_speed)
-            self.y -= self.back_front_speed
-            self.current_frames = self.walk_back_frames
-
-        elif (keys[pygame.K_DOWN] or keys[pygame.K_s]) and self.y <= 550:
-            self.update_animation(self.back_front_anim_speed)
-            self.y += self.back_front_speed
-            self.current_frames = self.walk_front_frames
-
-        elif (keys[pygame.K_LEFT] or keys[pygame.K_a]) and self.x > 148 and can_move.can_move_x(self.x - self.walk_speed, self.y):
-            self.update_animation(self.animation_speed)
-            self.x -= self.walk_speed
-            self.current_frames = self.walk_left_frames
-            self.last_direction = 'left'
-
-        elif (keys[pygame.K_RIGHT] or keys[pygame.K_d]) and self.x < 1200 and can_move.can_move_x(self.x + self.walk_speed, self.y):
-            self.update_animation(self.animation_speed)
-            self.x += self.walk_speed
-            self.current_frames = self.walk_right_frames
-            self.last_direction = 'right'
+        if is_moving:
+            self.idle_start_time = pygame.time.get_ticks()
+            self.is_sitting = False
 
         else:
-            if self.last_direction == 'right':
-                self.current_frame = 0
-            elif self.last_direction == 'left':
-                self.current_frame = 1
-            self.current_frames = self.chill_frames
+            current_time = pygame.time.get_ticks()
+            if current_time - self.idle_start_time > self.idle_duration and not self.is_sitting:
+                self.is_sitting = True
 
-        if self.current_frames != old_frames:
-            self.current_frame = 0
+        if self.is_sitting:
+            if self.last_direction == 'right':
+                self.current_frames = self.sit_right
+            elif self.last_direction == 'left':
+                self.current_frames = self.sit_left
+            if self.current_frame < len(self.current_frames) - 1:
+                self.update_animation(self.animation_speed)
+            else:
+                self.current_frame = len(self.current_frames) - 1
+        else:
+
+            if (keys[pygame.K_UP] or keys[pygame.K_w]) and self.y >= 414 and can_move.can_move_x(self.x, self.y - self.walk_speed):
+                self.update_animation(self.back_front_anim_speed)
+                self.y -= self.back_front_speed
+                self.current_frames = self.walk_back_frames
+
+            elif (keys[pygame.K_DOWN] or keys[pygame.K_s]) and self.y <= 550:
+                self.update_animation(self.back_front_anim_speed)
+                self.y += self.back_front_speed
+                self.current_frames = self.walk_front_frames
+
+            elif (keys[pygame.K_LEFT] or keys[pygame.K_a]) and self.x > 148 and can_move.can_move_x(self.x - self.walk_speed, self.y):
+                self.update_animation(self.animation_speed)
+                self.x -= self.walk_speed
+                self.current_frames = self.walk_left_frames
+                self.last_direction = 'left'
+
+            elif (keys[pygame.K_RIGHT] or keys[pygame.K_d]) and self.x < 1200 and can_move.can_move_x(self.x + self.walk_speed, self.y):
+                self.update_animation(self.animation_speed)
+                self.x += self.walk_speed
+                self.current_frames = self.walk_right_frames
+                self.last_direction = 'right'
+
+            else:
+                if self.last_direction == 'right':
+                    self.current_frame = 0
+                elif self.last_direction == 'left':
+                    self.current_frame = 1
+                self.current_frames = self.chill_frames
+
+            if self.current_frames != old_frames:
+                self.current_frame = 0
 
     def draw(self, surface, screen_width):
         current_sprite = self.current_frames[self.current_frame]
