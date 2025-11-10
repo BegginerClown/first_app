@@ -1,6 +1,7 @@
 import pygame
 from map.can_move import IsCanMove
 can_move = IsCanMove()
+from random import randint
 class Player():
     def __init__(self, name: str, x=200, y=500):
         self.hunger = 100
@@ -48,7 +49,9 @@ class Player():
         self.direction = 'right'
         self.current_frames = self.walk_right_frames
         self.idle_start_time = pygame.time.get_ticks()
+        self.last_input_time = pygame.time.get_ticks()#для автошага
         self.idle_duration = 5000
+        self.idle_duration2 = 6000#для автошага
         self.is_sitting = False
         self.is_getting_up = False
 
@@ -87,6 +90,7 @@ class Player():
         ])
 
         if is_moving:
+            self.last_input_time = pygame.time.get_ticks()#для автошага
             if self.is_sitting and not self.is_getting_up:
                 self.is_getting_up = True
                 self.is_sitting = False
@@ -147,6 +151,12 @@ class Player():
 
         if not is_moving:
             current_time = pygame.time.get_ticks()
+            # для автошага
+            '''if current_time - self.last_input_time > self.idle_duration2 and self.is_sitting and not self.is_getting_up:
+                self.is_getting_up = True
+                self.is_sitting = False'''
+            '''if current_time - self.last_input_time > self.idle_duration2:
+                self.self_moving()'''
             if current_time - self.idle_start_time > self.idle_duration and not self.is_sitting and not self.is_getting_up:
                 self.is_sitting = True
 
