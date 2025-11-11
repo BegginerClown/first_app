@@ -73,6 +73,7 @@ while running:
     pygame.display.update()
 
     clock.tick(60)
+player.save_data()
 pygame.quit()
 
 

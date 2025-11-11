@@ -1,15 +1,19 @@
 import pygame
 from map.can_move import IsCanMove
+from DB.DB import DB
+db = DB('DB/save.db')
+db.create_tables()
+
 can_move = IsCanMove()
-from random import randint
 class Player():
-    def __init__(self, name: str, x=200, y=500):
-        self.hunger = 100
-        self.happiness = 100
-        self.energy = 100
+    def __init__(self, name: str):
+        data = db.get_player_data(name)
+        self.hunger = int(data['hunger'])
+        self.happiness = int(data['happiness'])
+        self.energy = int(data['energy'])
         self.name = name
-        self.x = x
-        self.y = y
+        self.x = int(data['pos_x'])
+        self.y = int(data['pos_y'])
         self.walk_speed = 4
         self.back_front_speed = 1
         self.current_frame = 0
@@ -187,3 +191,13 @@ class Player():
         offset_x = offset_x * (1 - adjusted_perspective) + center_x * adjusted_perspective
 
         surface.blit(scaled_sprite, (offset_x, offset_y))
+
+    def save_data(self):
+        db.set_player_data(
+            pos_x=self.x,
+            pos_y=self.y,
+            hunger=int(self.hunger),
+            happiness=int(self.happiness),
+            energy=int(self.energy),
+            name=self.name
+        )
