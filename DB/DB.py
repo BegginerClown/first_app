@@ -81,6 +81,15 @@ class DB:
             except Exception as ex:
                 print(f'Ошибка при инсерте данных: {ex}')
 
+    def get_all_players(self):
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                """select name from Player_condition"""
+            )
+            rows = cursor.fetchall()
+            return [row['name'] for row in rows]
+
     def create_tables(self):
         with self.get_connection() as conn:
             cursor = conn.cursor()
