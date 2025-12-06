@@ -2,7 +2,7 @@ import pygame
 from map.can_move import IsCanMove
 from DB.DB import DB
 db = DB('DB/save.db')
-db.create_tables()
+#db.create_tables()
 
 can_move = IsCanMove()
 class Player():

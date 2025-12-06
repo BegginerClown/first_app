@@ -3,7 +3,7 @@ from player_core.player import Player
 from DB.DB import DB
 
 db = DB('DB/save.db')
-db.create_tables()
+#db.create_tables()
 
 clock = pygame.time.Clock()
 

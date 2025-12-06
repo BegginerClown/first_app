@@ -4,6 +4,7 @@ class DB:
 
     def __init__(self, db_file: str):
         self.db_file = db_file
+        self.create_tables()
 
     def get_connection(self):
         conn = sqlite3.connect(
