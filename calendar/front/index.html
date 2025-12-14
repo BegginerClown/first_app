@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Календарь как Google Calendar (упрощенная версия)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f6f6f6;
+        }
+
+        .calendar-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            border-bottom: 1px solid #ddd;
+            background-color: #fff;
+        }
+
+        .header button {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .header .month-year {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            background-color: #f1f1f1;
+            padding: 10px 0;
+            text-align: center;
+            font-weight: bold;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            min-height: 300px;
+        }
+
+        .day {
+            padding: 10px;
+            border-right: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            position: relative;
+            height: 100px; /* Минимальная высота для отображения событий */
+            overflow-y: auto;
+        }
+
+        .day:last-child {
+            border-right: none;
+        }
+
+        .day.inactive {
+            color: #aaa;
+            background-color: #f9f9f9;
+        }
+
+        .day.today {
+            background-color: #e8f0fe;
+        }
+
+        .event {
+            background-color: #4285f4;
+            color: white;
+            padding: 2px 5px;
+            margin: 2px 0;
+            border-radius: 3px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="calendar-container">
+        <div class="header">
+            <button id="prev">&lt;</button>
+            <span class="month-year"></span>
+            <button id="next">&gt;</button>
+        </div>
+        <div class="weekdays">
+            <div>Пн</div>
+            <div>Вт</div>
+            <div>Ср</div>
+            <div>Чт</div>
+            <div>Пт</div>
+            <div>Сб</div>
+            <div>Вс</div>
+        </div>
+        <div class="days" id="days"></div>
+    </div>
+
+    <script>
+        const months = [
+            "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
+            "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
+        ];
+
+        let currentDate = new Date();
+        const daysContainer = document.getElementById('days');
+        const monthYear = document.querySelector('.month-year');
+        const prevBtn = document.getElementById('prev');
+        const nextBtn = document.getElementById('next');
+
+        function renderCalendar() {
+            daysContainer.innerHTML = '';
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+
+            monthYear.textContent = `${months[month]} ${year}`;
+
+            const firstDay = new Date(year, month, 1).getDay();
+            const lastDate = new Date(year, month + 1, 0).getDate();
+            const prevLastDate = new Date(year, month, 0).getDate();
+
+            // Корректировка для понедельника как первого дня недели (в JS воскресенье - 0)
+            const firstDayIndex = (firstDay === 0) ? 6 : firstDay - 1;
+
+            // Дни предыдущего месяца
+            for (let i = firstDayIndex; i > 0; i--) {
+                const dayDiv = document.createElement('div');
+                dayDiv.classList.add('day', 'inactive');
+                dayDiv.innerHTML = `<span>${prevLastDate - i + 1}</span>`;
+                daysContainer.appendChild(dayDiv);
+            }
+
+            // Дни текущего месяца
+            for (let date = 1; date <= lastDate; date++) {
+                const dayDiv = document.createElement('div');
+                dayDiv.classList.add('day');
+                dayDiv.innerHTML = `<span>${date}</span>`;
+
+                const today = new Date();
+                if (date === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                    dayDiv.classList.add('today');
+                }
+
+                // Пример добавления событий (можно заменить на реальные данные)
+                if (date % 5 === 0) { // Каждые 5 дней добавляем событие
+                    const event = document.createElement('div');
+                    event.classList.add('event');
+                    event.textContent = 'Событие в ' + date;
+                    dayDiv.appendChild(event);
+                }
+
+                daysContainer.appendChild(dayDiv);
+            }
+
+            // Вычисляем, сколько пустых дней нужно добавить в конец (для полного грида)
+            const totalCells = firstDayIndex + lastDate;
+            const remaining = (7 - (totalCells % 7)) % 7;
+
+            // Дни следующего месяца
+            let nextDate = 1;
+            for (let i = 0; i < remaining; i++) {
+                const dayDiv = document.createElement('div');
+                dayDiv.classList.add('day', 'inactive');
+                dayDiv.innerHTML = `<span>${nextDate}</span>`;
+                daysContainer.appendChild(dayDiv);
+                nextDate++;
+            }
+        }
+
+        prevBtn.addEventListener('click', () => {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            renderCalendar();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            renderCalendar();
+        });
+
+        renderCalendar();
+    </script>
+</body>
+</html>
