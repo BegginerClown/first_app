@@ -183,7 +183,7 @@ class Player():
         center_x = screen_width // 2
         offset_x = self.x - (scaled_width - original_width) // 2
 
-        perspective_factor = (500 - self.y) /500
+        perspective_factor = (500 - self.y) / 500
         perspective_factor = min(1.0, perspective_factor * 3.0)
         distance_from_center = abs(offset_x - center_x)
         max_distance = center_x
