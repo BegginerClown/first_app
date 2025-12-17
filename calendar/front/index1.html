@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мой Календарь</title>
+    <style>
+        /* CSS стили */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        #calendar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        #header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        #year-title {
+            cursor: pointer;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        #month-year {
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #view-buttons button {
+            margin-left: 10px;
+            padding: 8px 16px;
+            border: none;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        #view-buttons button:hover {
+            background: #0056b3;
+        }
+
+        #add-event-btn {
+            padding: 8px 16px;
+            background: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        #add-event-btn:hover {
+            background: #218838;
+        }
+
+        #calendar {
+            display: grid;
+        }
+
+        /* Стили для месячного вида */
+        .month-view {
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .day-header {
+            text-align: center;
+            font-weight: bold;
+            padding: 10px;
+            background: #eee;
+        }
+
+        .day-cell {
+            position: relative;
+            padding: 20px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            min-height: 80px;
+        }
+
+        .day-cell:hover {
+            background: #f0f0f0;
+        }
+
+        .day-number {
+            font-size: 18px;
+        }
+
+        .other-month {
+            color: #999;
+            background: #f8f8f8;
+        }
+
+        .event-dot {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 6px;
+            height: 6px;
+            background: red;
+            border-radius: 50%;
+        }
+
+        .all-day-event {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: #ffc107;
+        }
+
+        /* Стили для годового вида */
+        .year-view {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .month-mini {
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+
+        .month-mini h3 {
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .month-mini-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+        }
+
+        .mini-day {
+            text-align: center;
+            padding: 5px;
+            border: 1px solid #eee;
+            cursor: pointer;
+        }
+
+        .mini-day.has-event {
+            background: #ffc107;
+        }
+
+        .mini-day:hover {
+            background: #f0f0f0;
+        }
+
+        /* Стили для недельного вида */
+        .week-view {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .week-day {
+            padding: 20px;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .week-day.has-event {
+            background: #ffc107;
+        }
+
+        .week-day:hover {
+            background: #f0f0f0;
+        }
+
+        /* Стили для дневного вида */
+        .day-view {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hour-slot {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            position: relative;
+        }
+
+        .event-block {
+            position: absolute;
+            left: 0;
+            right: 0;
+            background: #007bff;
+            color: white;
+            padding: 5px;
+            border-radius: 4px;
+        }
+
+        /* Модальное окно для добавления события */
+        #event-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        #event-form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+        }
+
+        #event-form input, #event-form select {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+        }
+
+        #event-form button {
+            padding: 8px 16px;
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="calendar-container">
+        <div id="header">
+            <div id="nav">
+                <button id="prev">&lt;</button>
+                <span id="month-year"></span>
+                <span id="year-title"></span>
+                <button id="next">&gt;</button>
+            </div>
+            <div id="view-buttons">
+                <button id="month-view-btn">Месяц</button>
+                <button id="year-view-btn">Год</button>
+                <button id="week-view-btn">Неделя</button>
+                <button id="day-view-btn">День</button>
+            </div>
+            <button id="add-event-btn">Добавить событие</button>
+        </div>
+        <div id="calendar"></div>
+    </div>
+
+    <!-- Модальное окно для добавления события -->
+    <div id="event-modal">
+        <form id="event-form">
+            <label>Дата (YYYY-MM-DD):</label>
+            <input type="date" id="event-date" required>
+
+            <label>Время начала (HH:MM):</label>
+            <input type="time" id="event-start">
+
+            <label>Время окончания (HH:MM):</label>
+            <input type="time" id="event-end">
+
+            <label>На весь день:</label>
+            <input type="checkbox" id="all-day">
+
+            <label>Описание:</label>
+            <input type="text" id="event-desc" required>
+
+            <button type="submit">Сохранить</button>
+            <button type="button" id="close-modal">Закрыть</button>
+        </form>
+    </div>
+
+    <script>
+        // JavaScript логика
+        let currentDate = new Date();
+        let currentView = 'month'; // month, year, week, day
+        let events = JSON.parse(localStorage.getItem('calendarEvents')) || []; // Хранение событий в localStorage
+
+        const calendar = document.getElementById('calendar');
+        const monthYear = document.getElementById('month-year');
+        const yearTitle = document.getElementById('year-title');
+        const prevBtn = document.getElementById('prev');
+        const nextBtn = document.getElementById('next');
+        const addEventBtn = document.getElementById('add-event-btn');
+        const eventModal = document.getElementById('event-modal');
+        const eventForm = document.getElementById('event-form');
+        const closeModal = document.getElementById('close-modal');
+
+        // Кнопки переключения видов
+        document.getElementById('month-view-btn').addEventListener('click', () => switchView('month'));
+        document.getElementById('year-view-btn').addEventListener('click', () => switchView('year'));
+        document.getElementById('week-view-btn').addEventListener('click', () => switchView('week'));
+        document.getElementById('day-view-btn').addEventListener('click', () => switchView('day'));
+
+        // Навигация
+        prevBtn.addEventListener('click', () => navigate(-1));
+        nextBtn.addEventListener('click', () => navigate(1));
+
+        // Клик на год для перехода к годовому виду
+        yearTitle.addEventListener('click', () => switchView('year'));
+
+        // Клик на название месяца в заголовке
+        monthYear.addEventListener('click', () => switchView('month'));
+
+        // Добавление события
+        addEventBtn.addEventListener('click', () => eventModal.style.display = 'flex');
+        closeModal.addEventListener('click', () => eventModal.style.display = 'none');
+        eventForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const date = document.getElementById('event-date').value;
+            const start = document.getElementById('event-start').value;
+            const end = document.getElementById('event-end').value;
+            const allDay = document.getElementById('all-day').checked;
+            const desc = document.getElementById('event-desc').value;
+
+            events.push({ date, start, end, allDay, desc });
+            localStorage.setItem('calendarEvents', JSON.stringify(events));
+            eventModal.style.display = 'none';
+            renderCalendar();
+        });
+
+        function switchView(view) {
+            if (currentView === view) return;
+            currentView = view;
+            renderCalendar();
+        }
+
+        function navigate(delta) {
+            if (currentView === 'month') {
+                currentDate.setMonth(currentDate.getMonth() + delta);
+            } else if (currentView === 'year') {
+                currentDate.setFullYear(currentDate.getFullYear() + delta);
+            } else if (currentView === 'week') {
+                currentDate.setDate(currentDate.getDate() + delta * 7);
+            } else if (currentView === 'day') {
+                currentDate.setDate(currentDate.getDate() + delta);
+            }
+            renderCalendar();
+        }
+
+        function renderCalendar() {
+            calendar.innerHTML = '';
+            calendar.className = currentView + '-view';
+
+            if (currentView === 'month') {
+                renderMonthView();
+            } else if (currentView === 'year') {
+                renderYearView();
+            } else if (currentView === 'week') {
+                renderWeekView();
+            } else if (currentView === 'day') {
+                renderDayView();
+            }
+
+            updateHeader();
+        }
+
+        function updateHeader() {
+            if (currentView === 'month') {
+                monthYear.textContent = currentDate.toLocaleString('ru', { month: 'long' }) + ' ';
+                yearTitle.textContent = currentDate.getFullYear();
+            } else if (currentView === 'year') {
+                monthYear.textContent = '';
+                yearTitle.textContent = currentDate.getFullYear();
+            } else if (currentView === 'week') {
+                const startOfWeek = new Date(currentDate);
+                startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
+                monthYear.textContent = `Неделя: ${startOfWeek.toLocaleDateString('ru')}`;
+                yearTitle.textContent = currentDate.getFullYear();
+            } else if (currentView === 'day') {
+                monthYear.textContent = currentDate.toLocaleDateString('ru');
+                yearTitle.textContent = currentDate.getFullYear();
+            }
+        }
+
+        function renderMonthView() {
+            const days = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+            days.forEach(day => {
+                const header = document.createElement('div');
+                header.className = 'day-header';
+                header.textContent = day;
+                calendar.appendChild(header);
+            });
+
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+
+            const firstDayOfMonth = new Date(year, month, 1);
+            const lastDayOfMonth = new Date(year, month + 1, 0);
+            const daysInMonth = lastDayOfMonth.getDate();
+
+            const lastDayOfPrevMonth = new Date(year, month, 0).getDate();
+
+            let firstDay = firstDayOfMonth.getDay();
+            const offset = firstDay === 0 ? 6 : firstDay - 1;
+
+            // Добавляем дни предыдущего месяца
+            for (let i = offset - 1; i >= 0; i--) {
+                const cell = document.createElement('div');
+                cell.className = 'day-cell other-month';
+                const prevDay = lastDayOfPrevMonth - i;
+                cell.innerHTML = `<span class="day-number">${prevDay}</span>`;
+                const prevMonth = month - 1 < 0 ? 11 : month - 1;
+                const prevYear = month - 1 < 0 ? year - 1 : year;
+                cell.dataset.date = `${prevYear}-${String(prevMonth + 1).padStart(2, '0')}-${String(prevDay).padStart(2, '0')}`;
+                cell.addEventListener('click', function() {
+                    currentDate = new Date(this.dataset.date);
+                    switchView('day');
+                });
+                calendar.appendChild(cell);
+            }
+
+            // Дни текущего месяца
+            for (let day = 1; day <= daysInMonth; day++) {
+                const cell = document.createElement('div');
+                cell.className = 'day-cell';
+                cell.innerHTML = `<span class="day-number">${day}</span>`;
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                cell.dataset.date = dateStr;
+                const dayEvents = events.filter(e => e.date === dateStr);
+
+                if (dayEvents.length > 0) {
+                    const dot = document.createElement('div');
+                    dot.className = 'event-dot';
+                    cell.appendChild(dot);
+                }
+
+                dayEvents.forEach(ev => {
+                    if (ev.allDay) {
+                        const strip = document.createElement('div');
+                        strip.className = 'all-day-event';
+                        cell.appendChild(strip);
+                    }
+                });
+
+                cell.addEventListener('click', function() {
+                    currentDate = new Date(this.dataset.date);
+                    switchView('day');
+                });
+
+                calendar.appendChild(cell);
+            }
+
+            // Добавляем дни следующего месяца для заполнения сетки
+            const totalCellsSoFar = offset + daysInMonth;
+            const remainingCells = (7 - (totalCellsSoFar % 7)) % 7;
+            if (remainingCells > 0) {
+                for (let day = 1; day <= remainingCells; day++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'day-cell other-month';
+                    cell.innerHTML = `<span class="day-number">${day}</span>`;
+                    const nextMonth = month + 1 > 11 ? 0 : month + 1;
+                    const nextYear = month + 1 > 11 ? year + 1 : year;
+                    cell.dataset.date = `${nextYear}-${String(nextMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                    cell.addEventListener('click', function() {
+                        currentDate = new Date(this.dataset.date);
+                        switchView('day');
+                    });
+                    calendar.appendChild(cell);
+                }
+            }
+        }
+
+        function renderYearView() {
+            for (let m = 0; m < 12; m++) {
+                const monthDiv = document.createElement('div');
+                monthDiv.className = 'month-mini';
+
+                const monthName = new Date(currentDate.getFullYear(), m, 1).toLocaleString('ru', { month: 'long' });
+                const h3 = document.createElement('h3');
+                h3.textContent = monthName;
+                h3.addEventListener('click', () => {
+                    currentDate.setMonth(m);
+                    currentDate.setDate(1);
+                    switchView('month');
+                });
+                monthDiv.appendChild(h3);
+
+                const miniGrid = document.createElement('div');
+                miniGrid.className = 'month-mini-grid';
+
+                const days = ['П', 'В', 'С', 'Ч', 'П', 'С', 'В'];
+                days.forEach(d => {
+                    const h = document.createElement('div');
+                    h.className = 'mini-day day-header';
+                    h.textContent = d;
+                    miniGrid.appendChild(h);
+                });
+
+                const year = currentDate.getFullYear();
+                const firstDayOfMonth = new Date(year, m, 1);
+                let firstDay = firstDayOfMonth.getDay();
+                const offset = firstDay === 0 ? 6 : firstDay - 1;
+                const daysInMonth = new Date(year, m + 1, 0).getDate();
+
+                // Пустые клетки в начале (offset)
+                for (let i = 0; i < offset; i++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'mini-day';
+                    miniGrid.appendChild(cell);
+                }
+
+                // Дни месяца
+                let day = 1;
+                for (let i = 0; i < daysInMonth; i++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'mini-day';
+                    cell.textContent = day;
+                    const dateStr = `${year}-${String(m + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                    cell.dataset.date = dateStr;
+                    if (events.some(e => e.date === dateStr)) {
+                        cell.classList.add('has-event');
+                    }
+
+                    cell.addEventListener('click', function() {
+                        currentDate = new Date(this.dataset.date);
+                        switchView('day');
+                    });
+
+                    miniGrid.appendChild(cell);
+                    day++;
+                }
+
+                // Нет trailing пустых клеток после конца месяца
+
+                monthDiv.appendChild(miniGrid);
+                calendar.appendChild(monthDiv);
+            }
+        }
+
+        function renderWeekView() {
+            const startOfWeek = new Date(currentDate);
+            startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1); // Понедельник
+
+            for (let i = 0; i < 7; i++) {
+                const dayDate = new Date(startOfWeek);
+                dayDate.setDate(dayDate.getDate() + i);
+
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'week-day';
+                dayDiv.textContent = dayDate.toLocaleDateString('ru', { weekday: 'long', day: 'numeric', month: 'short' });
+
+                const dateStr = dayDate.toISOString().split('T')[0];
+                dayDiv.dataset.date = dateStr;
+                if (events.some(e => e.date === dateStr)) {
+                    dayDiv.classList.add('has-event');
+                }
+
+                dayDiv.addEventListener('click', function() {
+                    currentDate = new Date(this.dataset.date);
+                    switchView('day');
+                });
+
+                calendar.appendChild(dayDiv);
+            }
+        }
+
+        function renderDayView() {
+            const dateStr = currentDate.toISOString().split('T')[0];
+            const dayEvents = events.filter(e => e.date === dateStr);
+
+            for (let h = 0; h < 24; h++) {
+                const hourDiv = document.createElement('div');
+                hourDiv.className = 'hour-slot';
+                hourDiv.textContent = `${String(h).padStart(2, '0')}:00`;
+
+                dayEvents.forEach(ev => {
+                    if (!ev.allDay) {
+                        const startHour = parseInt(ev.start.split(':')[0]);
+                        const endHour = parseInt(ev.end.split(':')[0]);
+                        if (h >= startHour && h < endHour) {
+                            const block = document.createElement('div');
+                            block.className = 'event-block';
+                            block.textContent = ev.desc;
+                            block.style.top = '0%'; // Упрощено
+                            block.style.height = '100%';
+                            hourDiv.appendChild(block);
+                        }
+                    } else {
+                        // Для всего дня можно добавить в заголовок или отдельно
+                    }
+                });
+
+                calendar.appendChild(hourDiv);
+            }
+        }
+
+        // Инициализация
+        renderCalendar();
+    </script>
+</body>
+</html>
