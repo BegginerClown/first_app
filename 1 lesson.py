@@ -1,24 +1,15 @@
-from kivy.lang import Builder
-from kivymd.app import MDApp
+from math import sqrt
 
-KV = '''
-MDBoxLayout:
-    orientation: "vertical"
-    spacing: "10dp"
+n = 8261200
 
-    MDLabel:
-        text: "Привет, KivyMD!"
-        halign: "center"
-        theme_text_color: "Primary"
-        font_style: "H4"
+# Найдём все делители
+divisors = set()
+for i in range(1, int(sqrt(n)) + 1):
+    if n % i == 0:
+        divisors.add(i)
+        divisors.add(n // i)
 
-    MDRaisedButton:
-        text: "Нажми меня"
-        pos_hint: {"center_x": 0.5}
-'''
-
-class MyApp(MDApp):
-    def build(self):
-        return Builder.load_string(KV)
-
-MyApp().run()
+# Отфильтруем делители >= 100000
+large_divisors = sorted([d for d in divisors if d >= 100000])
+large_divisors[:20], len(large_divisors)
+print(large_divisors[0])

@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Майя Брют | Одежда как Терапия</title>
+
+    <!-- Шрифты -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+
+    <!-- Стили -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <!-- ==================== НАВИГАЦИЯ ==================== -->
+    <header class="header" id="header">
+        <div class="container header__container">
+            <a href="/" class="logo">
+                <span class="logo__text">Майя Брют</span>
+            </a>
+
+            <nav class="nav" id="nav">
+                <ul class="nav__list">
+                    <li class="nav__item"><a href="#about" class="nav__link">О методе</a></li>
+                    <li class="nav__item"><a href="#process" class="nav__link">Путь</a></li>
+                    <li class="nav__item"><a href="#stories" class="nav__link">Истории</a></li>
+                    <li class="nav__item"><a href="#contact" class="nav__link">Контакты</a></li>
+                </ul>
+            </nav>
+
+            <a href="#consultation" class="btn btn--gold header__btn">Записаться</a>
+
+            <button class="burger" id="burger" aria-label="Меню">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- ==================== HERO SECTION ==================== -->
+        <section class="hero">
+            <div class="hero__overlay"></div>
+            <div class="container hero__container">
+                <div class="hero__content">
+                    <h1 class="hero__title">
+                        Позвольте себе<br>
+                        <span class="hero__title-accent">быть разной</span>
+                    </h1>
+                    <p class="hero__subtitle">
+                        Одежда, которая не требует быть сильной.<br>
+                        Индивидуальный пошив в сопровождении психолога<br>
+                        для женщин в период перемен.
+                    </p>
+                    <a href="#consultation" class="btn btn--burgundy hero__btn">
+                        Довериться заботе
+                    </a>
+                    <p class="hero__microcopy">
+                        Мы возьмём на себя все решения.<br>
+                        Вам нужно только прийти.
+                    </p>
+                </div>
+            </div>
+            <div class="hero__decorative-line"></div>
+        </section>
+
+        <!-- ==================== О МЕТОДЕ (Эмпатия) ==================== -->
+        <section class="about" id="about">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-label">О методе</span>
+                    <h2 class="section-title">Когда мир меняется,<br>важно сохранить опору внутри</h2>
+                </div>
+
+                <div class="about__grid">
+                    <div class="about__card">
+                        <div class="about__icon">
+                            <svg><!-- Icon: Heart --></svg>
+                        </div>
+                        <h3 class="about__card-title">Усталость от силы</h3>
+                        <p class="about__card-text">
+                            Быть сильной для всех, но внутри — пустота.
+                            Мы создаём пространство, где можно быть слабой.
+                        </p>
+                    </div>
+
+                    <div class="about__card">
+                        <div class="about__icon">
+                            <svg><!-- Icon: Shield --></svg>
+                        </div>
+                        <h3 class="about__card-title">Стыд тела</h3>
+                        <p class="about__card-text">
+                            Шрамы, вес, усталость — всё это часть вашей истории.
+                            Мы не скрываем, мы бережно подаём.
+                        </p>
+                    </div>
+
+                    <div class="about__card">
+                        <div class="about__icon">
+                            <svg><!-- Icon: Feather --></svg>
+                        </div>
+                        <h3 class="about__card-title">Потеря себя</h3>
+                        <p class="about__card-text">
+                            Гардероб «про прошлую версию».
+                            Мы помогаем создать одежду для нового «Я».
+                        </p>
+                    </div>
+                </div>
+
+                <div class="about__quote">
+                    <p>
+                        «В студии Майя Брют мы не просим вас соответствовать трендам.
+                        Мы создаём кокон, в котором можно зализать раны и набраться сил.»
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== ПРОЦЕСС (Путь) ==================== -->
+        <section class="process" id="process">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-label">Путь к себе</span>
+                    <h2 class="section-title">Три шага через ткань</h2>
+                </div>
+
+                <div class="process__timeline">
+                    <!-- Шаг 1 -->
+                    <div class="process__step">
+                        <div class="process__step-number">01</div>
+                        <div class="process__step-content">
+                            <div class="process__step-image">
+                                <img src="images/process-1.jpg" alt="Консультация с психологом">
+                            </div>
+                            <div class="process__step-text">
+                                <h3 class="process__step-title">Пространство доверия</h3>
+                                <p class="process__step-description">
+                                    Вы приходите к нам не как заказчик, а как гость.
+                                    За чашкой тёплого чая вы говорите с психологом и стилистом.
+                                    Не о мерках, а о чувствах. Мы слушаем, чтобы услышать то,
+                                    что вы боитесь сказать вслух.
+                                </p>
+                                <ul class="process__step-list">
+                                    <li>Глубинная консультация с психологом</li>
+                                    <li>Выявление потребностей и страхов</li>
+                                    <li>Определение образа-опоры</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Шаг 2 -->
+                    <div class="process__step process__step--reverse">
+                        <div class="process__step-number">02</div>
+                        <div class="process__step-content">
+                            <div class="process__step-image">
+                                <img src="images/process-2.jpg" alt="Создание эскиза">
+                            </div>
+                            <div class="process__step-text">
+                                <h3 class="process__step-title">Рождение формы</h3>
+                                <p class="process__step-description">
+                                    Вам не нужно выбирать из каталога.
+                                    Мы создаём эскиз, исходя из вашей потребности в защите или свободе.
+                                    Мы берём на себя всю сложность конструирования.
+                                </p>
+                                <ul class="process__step-list">
+                                    <li>Индивидуальный дизайн</li>
+                                    <li>Силуэт, который принимает тело</li>
+                                    <li>Никакой коррекции через боль</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Шаг 3 -->
+                    <div class="process__step">
+                        <div class="process__step-number">03</div>
+                        <div class="process__step-content">
+                            <div class="process__step-image">
+                                <img src="images/process-3.jpg" alt="Выбор тканей">
+                            </div>
+                            <div class="process__step-text">
+                                <h3 class="process__step-title">Тактильное исцеление</h3>
+                                <p class="process__step-description">
+                                    Вы выбираете ткань только одним способом — прикосновением.
+                                    Закройте глаза и почувствуйте, что любит ваша кожа.
+                                    Мы сошьём вещь так, что вы забудете, что она на вас.
+                                </p>
+                                <ul class="process__step-list">
+                                    <li>Выбор тканей через ощущения</li>
+                                    <li>Бережные примерки</li>
+                                    <li>Финальный ритуал передачи</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== ЛИД-МАГНИТ ==================== -->
+        <section class="lead-magnet" id="guide">
+            <div class="container">
+                <div class="lead-magnet__wrapper">
+                    <div class="lead-magnet__content">
+                        <span class="lead-magnet__label">Поддержка в моменте</span>
+                        <h2 class="lead-magnet__title">Подарок заботы для вас</h2>
+                        <p class="lead-magnet__text">
+                            Прямо сейчас вам не нужно принимать больших решений.
+                            Просто возьмите нашу поддержку. Мы подготовили гайд,
+                            который поможет пережить этот период бережно.
+                        </p>
+
+                        <div class="lead-magnet__guide-info">
+                            <div class="lead-magnet__guide-icon">📖</div>
+                            <div class="lead-magnet__guide-details">
+                                <h4>Гайд: «Гардероб в период шторма»</h4>
+                                <p>5 принципов одежды, которая лечит</p>
+                            </div>
+                        </div>
+
+                        <form class="lead-magnet__form" id="leadForm">
+                            <div class="form__group">
+                                <input type="text" name="name" placeholder="Ваше имя" required class="form__input">
+                            </div>
+                            <div class="form__group">
+                                <input type="email" name="email" placeholder="Email или Telegram" required class="form__input">
+                            </div>
+                            <button type="submit" class="btn btn--gold btn--full">
+                                Получить поддержку
+                            </button>
+                            <p class="form__privacy">
+                                🔒 Мы гарантируем конфиденциальность ваших данных
+                            </p>
+                        </form>
+                    </div>
+
+                    <div class="lead-magnet__image">
+                        <img src="images/lead-magnet-bg.jpg" alt="Обложка гайда">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== ИСТОРИИ (Портфолио) ==================== -->
+        <section class="stories" id="stories">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-label">Портфолио</span>
+                    <h2 class="section-title">Истории в ткани</h2>
+                </div>
+
+                <div class="stories__grid">
+                    <!-- История 1 -->
+                    <article class="story-card">
+                        <div class="story-card__image">
+                            <img src="images/story-1.jpg" alt="Платье для Анны">
+                        </div>
+                        <div class="story-card__content">
+                            <h3 class="story-card__title">Платье «Возрождение»</h3>
+                            <p class="story-card__text">
+                                <strong>Запрос:</strong> Вернуть ощущение женственности после смены профессии.<br>
+                                <strong>Решение:</strong> Мягкий шёлк, глубокий бордовый цвет, свободный крой.
+                            </p>
+                        </div>
+                    </article>
+
+                    <!-- История 2 -->
+                    <article class="story-card">
+                        <div class="story-card__image">
+                            <img src="images/story-2.jpg" alt="Костюм для Елены">
+                        </div>
+                        <div class="story-card__content">
+                            <h3 class="story-card__title">Костюм «Опора»</h3>
+                            <p class="story-card__text">
+                                <strong>Запрос:</strong> Нужна была «броня» для важных встреч.<br>
+                                <strong>Решение:</strong> Структурированная ткань, тёплый шоколад, мягкие плечи.
+                            </p>
+                        </div>
+                    </article>
+
+                    <!-- История 3 -->
+                    <article class="story-card">
+                        <div class="story-card__image">
+                            <img src="images/story-3.jpg" alt="Платье для Марии">
+                        </div>
+                        <div class="story-card__content">
+                            <h3 class="story-card__title">Платье «Нежность»</h3>
+                            <p class="story-card__text">
+                                <strong>Запрос:</strong> Принять тело после родов.<br>
+                                <strong>Решение:</strong> Струящийся беж, завышенная талия, дышащая ткань.
+                            </p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== КОНСУЛЬТАЦИЯ (CTA) ==================== -->
+        <section class="consultation" id="consultation">
+            <div class="container">
+                <div class="consultation__wrapper">
+                    <div class="consultation__content">
+                        <span class="section-label">Начать путь</span>
+                        <h2 class="section-title">Записаться на консультацию</h2>
+                        <p class="consultation__text">
+                            Первая встреча — это пространство для вас.
+                            Мы познакомимся, вы расскажете о себе, и мы поймём,
+                            как можем помочь.
+                        </p>
+
+                        <div class="consultation__details">
+                            <div class="detail-item">
+                                <span class="detail-item__icon">🕐</span>
+                                <span class="detail-item__text">60 минут</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-item__icon">👥</span>
+                                <span class="detail-item__text">Стилист + Психолог</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-item__icon">🔒</span>
+                                <span class="detail-item__text">Полная конфиденциальность</span>
+                            </div>
+                        </div>
+
+                        <a href="https://t.me/mayabrut" class="btn btn--burgundy btn--large">
+                            Написать в Telegram
+                        </a>
+                        <a href="https://wa.me/79000000000" class="btn btn--outline btn--large">
+                            Написать в WhatsApp
+                        </a>
+                    </div>
+
+                    <div class="consultation__image">
+                        <img src="images/consultation.jpg" alt="Консультация">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ==================== ФУТЕР ==================== -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer__grid">
+                <div class="footer__brand">
+                    <a href="/" class="logo logo--light">
+                        <span class="logo__text">Майя Брют</span>
+                    </a>
+                    <p class="footer__quote">
+                        «Одежда, которая согревает душу»
+                    </p>
+                </div>
+
+                <div class="footer__links">
+                    <h4 class="footer__heading">Навигация</h4>
+                    <ul class="footer__list">
+                        <li><a href="#about">О методе</a></li>
+                        <li><a href="#process">Путь</a></li>
+                        <li><a href="#stories">Истории</a></li>
+                        <li><a href="#consultation">Консультация</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__contact">
+                    <h4 class="footer__heading">Контакты</h4>
+                    <ul class="footer__list">
+                        <li><a href="tel:+79000000000">+7 (900) 000-00-00</a></li>
+                        <li><a href="mailto:hello@mayabrut.ru">hello@mayabrut.ru</a></li>
+                        <li>
+                            <a href="#" class="social-link">Telegram</a>
+                            <a href="#" class="social-link">WhatsApp</a>
+                            <a href="#" class="social-link">Instagram</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer__bottom">
+                <p>&copy; 2024 Майя Брют. Все права защищены.</p>
+                <div class="footer__legal">
+                    <a href="#">Политика конфиденциальности</a>
+                    <a href="#">Договор оферты</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Скрипты -->
+    <script src="js/main.js"></script>
+</body>
+</html>
